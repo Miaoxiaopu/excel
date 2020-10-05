@@ -1,0 +1,378 @@
+POST http://localhost:8080/uploadExcel
+Cache-Control: no-cache
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+--WebAppBoundary:
+Content-Disposition: form-data; name="file"; filename="2019年档案邮寄名单.xlsx"
+< C: \Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--WebAppBoundary--:
+
+<> 2020-09-28T112809.400.html
+
+###
+
+POST http://localhost:8080/uploadExcel
+Cache-Control: no-cache
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+--WebAppBoundary:
+Content-Disposition: form-data; name="file"; filename="2019年档案邮寄名单.xlsx"
+< C: \Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--WebAppBoundary--:
+
+<> 2020-09-28T112056.400.html
+
+###
+
+POST http://localhost:8080/uploadExcel
+Cache-Control: no-cache
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+--WebAppBoundary:
+Content-Disposition: form-data; name="file"; filename="2019年档案邮寄名单.xlsx"
+< C: \Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--WebAppBoundary--:
+
+<> 2020-09-28T112030.400.html
+
+###
+
+POST http://localhost:8080/uploadExcel
+Cache-Control: no-cache
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+--WebAppBoundary:
+Content-Disposition: form-data; name="file"; filename="2019年档案邮寄名单.xlsx"
+< C: \Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--WebAppBoundary--:
+
+<> 2020-09-28T112021.400.html
+
+###
+
+POST http://localhost:8080/uploadExcel
+Cache-Control: no-cache
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+--WebAppBoundary:
+Content-Disposition: form-data; name="multipartFile"; filename="2019年档案邮寄名单.xlsx"
+< C: \Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--WebAppBoundary--:
+
+<> 2020-09-28T112004.400.html
+
+###
+
+POST http://localhost:8080/uploadExcel
+Cache-Control: no-cache
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+--WebAppBoundary:
+Content-Disposition: form-data; name="multipartFile"; filename="2019年档案邮寄名单.xlsx"
+< C: \Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--WebAppBoundary--:
+
+<> 2020-09-28T111957.400.html
+
+###
+
+POST http://localhost:8080/uploadExcel
+Cache-Control: no-cache
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+--WebAppBoundary:
+Content-Disposition: form-data; name="multipartFile"; filename="2019年档案邮寄名单.xlsx"
+< C: \Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--WebAppBoundary--:
+
+<> 2020-09-28T111936.400.html
+
+###
+
+POST http://localhost:8080/uploadExcel
+Cache-Control: no-cache
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+--WebAppBoundary:
+Content-Disposition: form-data; name="multipartFile"; filename="2019年档案邮寄名单.xlsx"
+< C: \Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--WebAppBoundary--:
+
+<> 2020-09-28T111844.400.html
+
+###
+
+POST http://localhost:8080/uploadExcel
+Cache-Control: no-cache
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+--WebAppBoundary:
+Content-Disposition: form-data; name="multipartFile"; filename="2019年档案邮寄名单.xlsx"
+< C: \Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--WebAppBoundary--:
+
+<> 2020-09-28T111832.400.html
+
+###
+
+POST http://localhost:8080/uploadExcel
+Cache-Control: no-cache
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+--WebAppBoundary:
+Content-Disposition: form-data; name="multipartFile"; filename="2019年档案邮寄名单.xlsx"
+< C: \Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--WebAppBoundary--:
+
+<> 2020-09-28T111752.400.html
+
+###
+
+POST http://localhost:8080/uploadExcel
+Cache-Control: no-cache
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+--WebAppBoundary:
+Content-Disposition: form-data; name="multipartFile"; filename="2019年档案邮寄名单.xlsx"
+< C: \Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--WebAppBoundary--:
+
+<> 2020-09-28T111725.400.html
+
+###
+
+POST http://localhost:8080/uploadExcel
+Cache-Control: no-cache
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+--WebAppBoundary:
+Content-Disposition: form-data; name="multipartFile"; filename="2019年档案邮寄名单.xlsx"
+< C: \Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--WebAppBoundary--:
+
+<> 2020-09-28T111716.400.html
+
+###
+
+POST http://localhost:8080/uploadExcel
+Cache-Control: no-cache
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+--WebAppBoundary:
+Content-Disposition: form-data; name="multipartFile"; filename="2019年档案邮寄名单.xlsx"
+< C: \Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--WebAppBoundary--:
+
+<> 2020-09-28T111632.400.html
+
+###
+
+POST http://localhost:8080/uploadExcel
+Cache-Control: no-cache
+Content-Type: multipart/form-data
+boundary: WebAppBoundary
+Content-Disposition: form-data
+
+<> 2020-09-28T111513.500.json
+
+###
+
+POST http://localhost:8080/uploadExcel
+Cache-Control: no-cache
+Content-Type: multipart/form-data
+boundary: WebAppBoundary
+Content-Disposition: form-data
+
+--null
+
+
+< C:\Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--null--
+
+<> 2020-09-28T111451.500.json
+
+###
+
+POST http://localhost:8080/uploadExcel
+
+--null
+
+
+< C:\Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--null--
+
+<> 2020-09-28T111333.400.json
+
+###
+
+POST http://localhost:8080/uploadExcel
+Accept: */*
+Cache-Control: no-cache
+
+--null
+
+
+< C:\Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--null--
+
+###
+
+POST http://localhost:8080/uploadExcel
+Accept: */*
+Cache-Control: no-cache
+
+--null
+
+
+< C:\Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--null--
+
+<> 2020-09-28T111129.400.json
+
+###
+
+POST http://localhost:8080/uploadExcel
+Accept: */*
+Cache-Control: no-cache
+
+--null
+
+
+< C:\Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--null--
+
+###
+
+POST http://localhost:8080/uploadExcel
+Accept: */*
+Cache-Control: no-cache
+
+--null
+
+
+< C:\Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--null--
+
+<> 2020-09-28T111040.400.json
+
+###
+
+POST http://localhost:8080/uploadExcel
+Accept: */*
+Cache-Control: no-cache
+
+--null
+
+
+< C:\Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--null--
+
+###
+
+POST http://localhost:8080/uploadExcel
+Accept: */*
+Cache-Control: no-cache
+
+--null
+
+
+< C:\Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--null--
+
+<> 2020-09-28T110943.400.json
+
+###
+
+POST http://localhost:8080/uploadExcel
+Accept: */*
+Cache-Control: no-cache
+
+--null
+
+
+< C:\Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--null--
+
+###
+
+POST http://localhost:8080/uploadExcel
+Accept: */*
+Cache-Control: no-cache
+
+--null
+
+
+< C:\Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--null--
+
+<> 2020-09-28T110759.400.json
+
+###
+
+POST http://localhost:8080/uploadExcel
+Accept: */*
+Cache-Control: no-cache
+
+--null
+
+
+< C:\Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--null--
+
+###
+
+POST http://localhost:8080/uploadExcel
+Accept: */*
+Cache-Control: no-cache
+
+--null
+
+
+< C:\Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--null--
+
+<> 2020-09-28T110525.400.json
+
+###
+
+POST http://localhost:8080/uploadExcel
+Accept: */*
+Cache-Control: no-cache
+
+--null
+
+
+< C:\Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--null--
+
+###
+
+POST http://localhost:8080/uploadExcel
+Accept: */*
+Cache-Control: no-cache
+
+--null
+
+
+< C:\Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--null--
+
+<> 2020-09-28T110502.400.json
+
+###
+
+POST http://localhost:8080/uploadExcel?file=
+Accept: */*
+Cache-Control: no-cache
+
+--null
+
+
+< C:\Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--null--
+
+<> 2020-09-28T110420.400.json
+
+###
+
+POST http://localhost:8080/uploadExcel
+Accept: */*
+Cache-Control: no-cache
+
+--null
+
+
+< C:\Users\pu\Desktop\2019年档案邮寄名单.xlsx
+--null--
+
+<> 2020-09-28T110343.400.json
+
+###
+

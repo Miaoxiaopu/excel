@@ -1,0 +1,13 @@
+minio-config:
+  endpoint: http://127.0.0.1
+  port: 9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucketName: excelset
+
+#elasticseacrh配置
+es:
+  host: 192.168.99.100
+  port: 9200
+  scheme: http
+  idxName: fileinfo1

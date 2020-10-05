@@ -1,0 +1,7 @@
+{
+  "timestamp": "2020-09-28 15:14:51",
+  "status": 500,
+  "error": "Internal Server Error",
+  "message": "Failed to parse multipart servlet request; nested exception is org.apache.commons.fileupload.FileUploadException: the request was rejected because no multipart boundary was found",
+  "path": "/uploadExcel"
+}
