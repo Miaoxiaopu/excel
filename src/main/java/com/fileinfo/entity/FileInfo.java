@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 @Data
-public class FileInfo {
+public class FileInfo extends BaseEntity{
     @TableField(value = "content")
     private byte[] content;
     @TableField(value = "file_id")
@@ -15,4 +15,6 @@ public class FileInfo {
     private String fileType;
     @TableField(value = "bucket_name")
     private String bucketName;
+    @TableField(exist = false)
+    private String contentStr;
 }

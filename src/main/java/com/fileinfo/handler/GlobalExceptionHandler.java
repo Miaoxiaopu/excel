@@ -1,4 +1,4 @@
-package com.fileinfo.interceptor;
+package com.fileinfo.handler;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -29,7 +29,7 @@ public class FileConfig {
     }
     @Bean
     public MinioClient getMinioClient() throws InvalidPortException, InvalidEndpointException {
-        log.info("------------------------------->minio配置" + minioProps.toString());
+        log.info("------->minio配置" + minioProps.toString());
         return new MinioClient(minioProps.getEndpoint(),minioProps.getPort(),minioProps.getAccessKey(),minioProps.getSecretKey());
     }
 }

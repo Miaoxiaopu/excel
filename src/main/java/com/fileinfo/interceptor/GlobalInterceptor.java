@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 public class GlobalInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("request url ---------------------------->" + request.getRequestURL()+ "<----------------------------");
+        log.info("------>request url:" + request.getRequestURL()+ "<------");
         return true;
     }
 
