@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>上传下载</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/js/jquery-1.11.0.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body class="container">
+    <script type="text/javascript">
+        $(function() {
+            getFile("",1,0);
+        })
+        function getCurrPage(operatetype, current, total) {
+            if (operatetype == 'last' ||　operatetype == 'search') {// 点击上一页
+                if (current > 1) {
+                    return current - 1;
+                }else {
+                    return 1;
+                }
+            } else if (operatetype == 'next') {
+                if (current < total) {
+                    return current + 1;
+                }else{
+                    return current;
+                }
+            } else if (operatetype == 'first') {
+                return 1;
+            } else if (operatetype == 'end') {
+                return total;
+            }else{
+                return current;
+            }
+        }
+        function getFile(operatetype, current, total){
+            if(operatetype == 'end' || operatetype == 'next'){
+                if(current == total){
+                    alert("已经是最后一页，请勿重复点击！");
+                    return;
+                }
+            }
+            if(operatetype == 'first' || operatetype == 'last'){
+                if(current == 1){
+                    alert("已经是第一页，请勿重复点击！");
+                    return;
+                }
+            }
+            $.ajax({
+                type: "POST", // 使用post方式
+                url:  "/getFileInfo",
+                contentType:"application/json",
+                data: JSON.stringify({
+                    current:getCurrPage(operatetype, current, total),
+                    size:10,
+                    fileContent: $("#fileSearch").val(),
+                    fileName: $("#fileNameSearch").val()
+                }), // 参数列表，stringify()方法用于将JS对象序列化为json字符串
+                dataType:"json",
+                success: function(result){
+                    console.log('查询结果',result);
+                    if(result.records!=null && result.records.length == 0){
+                        $("#dataTable").empty();
+                        $("#dataTable").append(
+                            "<br>"+
+                            "<h3>暂无数据</h3>."
+                        );
+                        $("#dataTable").modal
+                    }else{
+                        $("#dataTable").empty();// 每次请求前将table内容清空
+                        rebuildTableHead();// 重组表头
+                        rebuildPage(result);// 重组上一页、下一页、首页、尾页
+                        $(result.records).each(function (index,item) {
+                            rebuildTable(index,item);// 重组table内容
+                        });
+                    }
+                },
+                error: function(result){
+                    console.log("查询失败",result);
+                }
+            });
+        }
+        function jumpToShowDetail(target){
+            console.log(target.cells[1].innerHTML);
+            window.location.href="/getHtmlDataById?fileId="+target.cells[1].innerHTML+"&fileContent="+$("#fileSearch").val();
+        }
+        function rebuildTableHead(){
+            $("#dataTable").append(
+                "<thead>"+
+                "<tr><th>序号</th>"+
+                "<th>文件id</th>"+
+                "<th>文件名</th>"+
+                "<th>上传时间</th>"+
+                "</tr>"+
+                "</thead>"
+            );
+        }
+
+        function rebuildTable(index,item){
+            $("#dataTable").append(
+            "<tbody>"+
+                "<tr onclick='jumpToShowDetail(this)'><th>"+eval(index+1)+"</th>" +
+                    "<td>"+item.fileId+"</td>" +
+                    "<td>"+item.fileName+"</td>"+
+                    "<td>"+item.createTime+"</td>" +
+                "</tr>" +
+            "</tbody>");
+        }
+        function rebuildPage(result){
+            $("#pageDiv").empty();
+            $("#pageDiv").append(
+            "<ul class=\"pagination pull-right no-margin\">"+
+                " <li>"+
+                    "共"+result.pages+"页，"+
+                "</li>"+
+                " <li>"+
+                    "当前是第"+result.current+"页"+
+                "</li>"+
+               " <li>"+
+                    "<a href=\"javascript:void(0);\" onClick=\"getFile('first',"+result.current+","+result.pages+")\">首页</a>"+
+                "</li>"+
+                "<li>"+
+                    "<a href=\"javascript:void(0);\" onclick=\"getFile('last',"+result.current+","+result.pages+")\">上一页</a>"+
+                "</li>"+
+                "<li>"+
+                    "<a href=\"javascript:void(0);\" onclick=\"getFile('next',"+result.current+","+result.pages+")\">下一页</a>"+
+                "</li>"+
+                "<li>"+
+                    "<a href=\"javascript:void(0);\" onclick=\"getFile('end',"+result.current+","+result.pages+")\">尾页</a>"+
+                "</li>"+
+            "</ul>"
+            );
+        }
+    </script>
+    <br/>
+        <h1>excel上传下载</h1>
+    <br/><br/>
+    <div class="with:80%">
+        <input type="text" id="fileSearch">
+        <button th:onclick="|getFile('search',1,'${data.getPages()}')|">按文件内容搜索</button>
+        <input type="text" id="fileNameSearch">
+        <button th:onclick="|getFile('search',1,'${data.getPages()}')|">按文件名搜索</button>
+        <form action="/uploadExcel" method="post" enctype="multipart/form-data">
+            <input type="file" accept=".xls,.xlsx" name="file">
+            <button type="submit">上传文件</button>
+        </form>
+        <!-- 分页数据-->
+        <table class="table table-hover" id="dataTable">
+        </table>
+    </div>
+    <!--上一页、下一页、首页、尾页-->
+    <div class="modal-footer no-margin-top" id="pageDiv"></div>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h5 class="modal-title" id="myModalLabel">
+                        excel内容
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    resullt.contentStr
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

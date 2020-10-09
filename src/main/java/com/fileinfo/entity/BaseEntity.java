@@ -3,11 +3,12 @@ package com.fileinfo.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fileinfo.utils.DatePattern;
 import lombok.Data;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 
-@Data
-public class BaseEntity {
+@Setter
+public abstract class BaseEntity {
     @TableField(value = "create_time")
     private Timestamp createTime;
     @TableField(value = "update_time")
