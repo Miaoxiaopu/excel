@@ -3,12 +3,10 @@ package com.fileinfo.utils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -16,6 +14,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.apache.poi.ss.usermodel.HorizontalAlignment.*;
 
 @Slf4j
 public final class ExcelUtils {
@@ -27,18 +27,16 @@ public final class ExcelUtils {
      * @throws IOException
      */
     public static String excelToHtml(MultipartFile file) throws IOException {
-        InputStream inputStream = file.getInputStream();
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Workbook workbook = WorkbookFactory.create(bufferedInputStream);
-
+//        InputStream inputStream = file.getInputStream();
+//        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+//        Workbook workbook = WorkbookFactory.create(bufferedInputStream);
+        Workbook workbook = WorkbookFactory.create(new File("C:\\Users\\pu\\Desktop\\材料用无锡市2020年重大项目2.xlsx"));
         StringBuilder result = new StringBuilder();
-
         for (int sheetIdx = 0; sheetIdx < workbook.getNumberOfSheets(); sheetIdx++) {
             Sheet currSheet = workbook.getSheetAt(sheetIdx);
             StringBuilder sheetSb = new StringBuilder();
             sheetSb.append("Sheet" + (sheetIdx+1) + "["+ currSheet.getSheetName() + "]").append("<br>");
             sheetSb.append("<table border style='border-collapse:collapse;'>");
-
             for (int rowIdx = currSheet.getFirstRowNum(); rowIdx < currSheet.getLastRowNum(); rowIdx++) {
                 Row row = currSheet.getRow(rowIdx);
                 // 空行直接置空、跳过继续下一行
@@ -65,6 +63,9 @@ public final class ExcelUtils {
                     if (recordRegion(currSheet, rowIdx, colIdx, sheetSb)) {
                         continue;
                     }
+                    // 字体居中、靠左、靠右
+                    dealExcelStyle(cell,sheetSb);
+                    sheetSb.append(">");
 
                     if (StringUtils.isNotBlank(stringCellValue)) {
                         sheetSb.append(stringCellValue.replace(String.valueOf((char) 160), "&nbsp;"));
@@ -99,12 +100,12 @@ public final class ExcelUtils {
             String lastCol = regionAddress.split(",")[1];
             int rowSpan = Integer.valueOf(bottomRow) - rowIdx + 1;
             int colSpan = Integer.valueOf(lastCol) - colIdx + 1;
-            sheetSb.append("<td rowspan='" + rowSpan + "' colspan='" + colSpan + "'>");
+            sheetSb.append("<td rowspan='" + rowSpan + "' colspan='" + colSpan + "'");
         } else if (rowpanColSpanMap[1].containsKey(rowIdx + "," + colIdx)) {
             rowpanColSpanMap[1].remove(rowIdx + "," + colIdx);// for GC
             return true;
         } else {
-            sheetSb.append("<td>");
+            sheetSb.append("<td");
         }
         return false;
     }
@@ -182,6 +183,61 @@ public final class ExcelUtils {
             default:
                 return null;
         }
+    }
+
+    private static void dealExcelStyle(Cell cell, StringBuilder sb){
+        CellStyle cellStyle = cell.getCellStyle();
+        if (cellStyle != null) {
+            HorizontalAlignment alignment = cellStyle.getAlignment();
+            sb.append(" align='" + convertAlignToHtml(alignment) + "'");//单元格内容的水平对齐方式
+            VerticalAlignment verticalAlignment = cellStyle.getVerticalAlignment();
+            sb.append(" valign='"+ convertVerticalAlignToHtml(verticalAlignment) + "'");//单元格中内容的垂直排列方式
+        }
+    }
+    /**
+     * 单元格内容的水平对齐方式
+     * @param alignment
+     * @return
+     */
+    private static String convertAlignToHtml(HorizontalAlignment alignment) {
+        String align = "left";
+        switch (alignment) {
+            case LEFT:
+                align = "left";
+                break;
+            case CENTER:
+                align = "center";
+                break;
+            case RIGHT:
+                align = "right";
+                break;
+            default:
+                break;
+        }
+        return align;
+    }
+
+    /**
+     * 单元格中内容的垂直排列方式
+     * @param verticalAlignment
+     * @return
+     */
+    private static String convertVerticalAlignToHtml(VerticalAlignment verticalAlignment) {
+        String valign = "middle";
+        switch (verticalAlignment) {
+            case BOTTOM:
+                valign = "bottom";
+                break;
+            case CENTER:
+                valign = "center";
+                break;
+            case TOP:
+                valign = "top";
+                break;
+            default:
+                break;
+        }
+        return valign;
     }
 
     @Deprecated
