@@ -27,10 +27,9 @@ public final class ExcelUtils {
      * @throws IOException
      */
     public static String excelToHtml(MultipartFile file) throws IOException {
-//        InputStream inputStream = file.getInputStream();
-//        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-//        Workbook workbook = WorkbookFactory.create(bufferedInputStream);
-        Workbook workbook = WorkbookFactory.create(new File("C:\\Users\\pu\\Desktop\\材料用无锡市2020年重大项目2.xlsx"));
+        InputStream inputStream = file.getInputStream();
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Workbook workbook = WorkbookFactory.create(bufferedInputStream);
         StringBuilder result = new StringBuilder();
         for (int sheetIdx = 0; sheetIdx < workbook.getNumberOfSheets(); sheetIdx++) {
             Sheet currSheet = workbook.getSheetAt(sheetIdx);
@@ -291,9 +290,5 @@ public final class ExcelUtils {
             }
 
         }
-    }
-
-    public static void main(String[] args) throws IOException {
-        excelToHtml(null);
     }
 }
