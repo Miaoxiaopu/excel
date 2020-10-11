@@ -121,48 +121,45 @@
         console.log(target.cells[1].innerHTML);
         window.location.href = "/getHtmlDataById?fileId=" + target.cells[1].innerHTML + "&fileContent=" + $("#fileSearch").val();
     }
+    // 跳转查看到文件明细
+    function jumpToShowDetailById(fileId) {
+        window.location.href = "/getHtmlDataById?fileId=" + fileId + "&fileContent=" + $("#fileSearch").val();
+    }
     // 渲染数据列表头
     function rebuildTableHead() {
         $("#dataTable").append(
             "<thead>" +
-            "<tr><th>序号</th>" +
-            "<th>文件id</th>" +
-            "<th>文件名</th>" +
-            "<th>上传时间</th>" +
-            "<th>操作</th>" +
+            "<tr>" +
+                "<th>序号</th>" +
+                "<th>文件id</th>" +
+                "<th>文件名</th>" +
+                "<th>上传时间</th>" +
+                "<th>操作</th>" +
             "</tr>" +
             "</thead>"
         );
+    }
+    // 下载文件
+    function downFile(fileName) {
+        showLoading("下载中，请稍等。。。");
+        window.location.href="/downExcel?fileName=" + fileName;
+        hideLoading();
     }
     // 渲染数据列数据
     function rebuildTable(index, item) {
         $("#dataTable").append(
             "<tbody>" +
-            "<tr style='cursor: pointer;' onclick='jumpToShowDetail(this)'><th>" + eval(index + 1) + "</th>" +
-            "<td>" + item.fileId + "</td>" +
-            "<td>" + item.fileName + "</td>" +
-            "<td>" + item.createTime + "</td>" +
-            "<td><input onclick=\"downFile(item.fileName)\" type=\"button\" value=\"下载\" class=\"btn btn-primary\"></td>" +
+            "<tr style='cursor: pointer;'><th>" + eval(index + 1) + "</th>" +
+                "<td>" + item.fileId + "</td>" +
+                "<td>" + item.fileName + "</td>" +
+                "<td>" + item.createTime + "</td>" +
+                "<td><input onclick=\"jumpToShowDetailById("+item.fileId+")\" type=\"button\" value=\"查看\" class=\"btn btn-primary\">" + "&nbsp;"+
+                    "<input onclick=\"downFile('"+item.fileName+"')\" type=\"button\" value=\"下载\" class=\"btn btn-primary\">" +
+                "</td>" +
             "</tr>" +
             "</tbody>");
     }
-    // 下载文件
-    function downFile(fileName) {
-        showLoading("下载中，请稍等。。。");
-        $.ajax({
-            type: "POST", // 使用post方式
-            url: "/downExcel",
-            data: "fileName=" + fileName,
-            success: function (result) {
-                hideLoading();
-                showPopModal(result);
-            },
-            error: function (err) {
-                hideLoading();
-                showPopModal(下载失败);
-            }
-        });
-    }
+
     // 渲染分页组件
     function rebuildPage(result) {
         $("#pageDiv").empty();
