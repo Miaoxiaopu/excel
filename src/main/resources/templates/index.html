@@ -10,8 +10,9 @@
     <script type="text/javascript" th:src="@{/js/bootstrap-paginator.js}"></script>
     <script type="text/javascript" th:src="@{/js/fileinput.min.js}"></script>
 </head>
-<body onload="initLoading()" class="container">
+<body onload="initLoading()" style="background-color: #EFF1F4"  class="container">
 <script type="text/javascript">
+    // 初始化遮罩
     function initLoading() {
         $("body").append("<!-- loading -->" +
             "<div class='modal fade' id='loading' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop='static'>" +
@@ -29,20 +30,20 @@
             "</div>"
         );
     }
-
+    // 显示遮罩
     function showLoading(text) {
         $("#loadingText").html(text);
         $("#loading").modal("show");
     }
-
+    // 隐藏遮罩
     function hideLoading() {
         $("#loading").modal("hide");
     }
-
+    // 页面初始化查询数据
     $(function () {
         getFile("", 1, 0);
     })
-
+    // 计算当前页
     function getCurrPage(operatetype, current, total) {
         if (operatetype == 'last' || operatetype == 'search') {// 点击上一页
             if (current > 1) {
@@ -64,7 +65,7 @@
             return current;
         }
     }
-
+    // 数据列数据查询
     function getFile(operatetype, current, total) {
         if (operatetype == 'end' || operatetype == 'next') {
             if (current == total) {
@@ -109,18 +110,18 @@
                 }
                 hideLoading();
             },
-            error: function (result) {
-                console.log("查询失败", result);
+            error: function (err) {
+                console.log("查询失败", err);
                 hideLoading();
             }
         });
     }
-
+    // 跳转到文件明细
     function jumpToShowDetail(target) {
         console.log(target.cells[1].innerHTML);
         window.location.href = "/getHtmlDataById?fileId=" + target.cells[1].innerHTML + "&fileContent=" + $("#fileSearch").val();
     }
-
+    // 渲染数据列表头
     function rebuildTableHead() {
         $("#dataTable").append(
             "<thead>" +
@@ -128,11 +129,12 @@
             "<th>文件id</th>" +
             "<th>文件名</th>" +
             "<th>上传时间</th>" +
+            "<th>操作</th>" +
             "</tr>" +
             "</thead>"
         );
     }
-
+    // 渲染数据列数据
     function rebuildTable(index, item) {
         $("#dataTable").append(
             "<tbody>" +
@@ -140,10 +142,28 @@
             "<td>" + item.fileId + "</td>" +
             "<td>" + item.fileName + "</td>" +
             "<td>" + item.createTime + "</td>" +
+            "<td><input onclick=\"downFile(item.fileName)\" type=\"button\" value=\"下载\" class=\"btn btn-primary\"></td>" +
             "</tr>" +
             "</tbody>");
     }
-
+    // 下载文件
+    function downFile(fileName) {
+        showLoading("下载中，请稍等。。。");
+        $.ajax({
+            type: "POST", // 使用post方式
+            url: "/downExcel",
+            data: "fileName=" + fileName,
+            success: function (result) {
+                hideLoading();
+                showPopModal(result);
+            },
+            error: function (err) {
+                hideLoading();
+                showPopModal(下载失败);
+            }
+        });
+    }
+    // 渲染分页组件
     function rebuildPage(result) {
         $("#pageDiv").empty();
         $("#pageDiv").append(
@@ -164,7 +184,7 @@
             "</ul>"
         );
     }
-
+    // 渲染分页1、2、3、4、5
     function reDrawEveryPage(result) {
         var res = "";
         for (var index = 0; index < result.pages; index++) {
@@ -176,6 +196,7 @@
         }
         return res;
     }
+    // 上传文件前是否选择了文件
     function checkBeforeSubmit(){
         if($("#i-file").val() == "" || $("#i-file").val() == null){
             showPopModal("请选择文件！");
@@ -193,7 +214,7 @@
 </script>
 <br/>
 <!--<h1>excel上传下载</h1>-->
-<br/><br/>
+<!--<br/><br/>-->
 <div class="with:80%">
     <form class="form-inline" action="/uploadExcel" method="post" enctype="multipart/form-data" onsubmit="return checkBeforeSubmit()">
         <label class="input-group-btn">
@@ -205,6 +226,7 @@
         </label>
         <label class="input-group-btn">
             <input type="text" class="form-control" id="fileSearch">
+            <!--TODO页面初始化时候data.getPages()拿不到值-->
             <input type="button" class="btn btn-primary" th:onclick="|getFile('search',1,'${data.getPages()}')|"
                    value="按文件内容搜索"/>
         </label>
@@ -223,6 +245,7 @@
 <!--上一页、下一页、首页、尾页-->
 <div class="modal-footer no-margin-top" id="pageDiv"></div>
 
+<!--控制模态框显示的按钮-->
 <button class="btn btn-primary btn-lg" id="modalControl" data-toggle="modal" data-target="#myModal" style="display: none;">
     开始演示模态框
 </button>
