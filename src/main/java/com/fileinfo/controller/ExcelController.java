@@ -77,11 +77,11 @@ public class ExcelController {
     }
 
     @RequestMapping("/downExcel")
-    public String downExcel(@RequestParam("fileName") String fileName, HttpServletResponse response) throws IOException {
+    public void downExcel(@RequestParam("fileName") String fileName, HttpServletResponse response) throws IOException {
         String utf8Filename = new String(fileName.getBytes(), StandardCharsets.UTF_8);
         response.setHeader("Content-Disposition", "attachment;filename=" + new String(utf8Filename.getBytes("utf-8"), "ISO8859-1"));
+        response.setContentType("\"application/octet-stream\"");
         minioUtils.download(minioProps.getBucketName(), utf8Filename, response.getOutputStream());
-        return MessageEnumType.SUCCESS.getMessage();
     }
 
     @RequestMapping("/getHtmlData")
@@ -120,6 +120,7 @@ public class ExcelController {
         }
         // 查询除了content的其他字段
         queryWrapper.select(FileInfo.class, (column) -> !column.getColumn().equals("content"));
+        queryWrapper.orderByDesc("create_time");
         FileCondition res = fileInfoService.page(fileCondition, queryWrapper);
         model.addAttribute("data",res);
         return res;
