@@ -57,31 +57,42 @@ public class ExcelController {
     @RequestMapping("/uploadExcel")
     public String uploadExcel(@RequestParam("file") MultipartFile file) throws IOException {
         QueryWrapper queryWrapper = new QueryWrapper<>();
+        String originalFilename = file.getOriginalFilename();
         queryWrapper.eq("bucket_name", minioProps.getBucketName());
-        queryWrapper.eq("file_name", file.getOriginalFilename());
+        queryWrapper.eq("file_name", originalFilename);
         List<FileInfo> fileList = fileInfoService.list(queryWrapper);
+        // 文件是否已经上传过了
         if (!CollectionUtils.isEmpty(fileList)) {
             return MessageEnumType.FILE_EXIST.getMessage();
         }
-        String content = ExcelUtils.excelToHtml(file);
+        // 文件类型是不是excel
         FileInfo fileInfo = new FileInfo();
-        fileInfo.setFileName(file.getOriginalFilename());
-        fileInfo.setFileType(file.getContentType());
-        fileInfo.setContent(content.getBytes("utf-8"));
+        String fileType = originalFilename.substring(originalFilename.lastIndexOf("."));
+        if("xlsx".equalsIgnoreCase(fileType) || "xls".equalsIgnoreCase(fileType) ){
+            String content = ExcelUtils.excelToHtml(file);
+            fileInfo.setContent(content.getBytes("utf-8"));
+        }
+        fileInfo.setFileName(originalFilename);
+        fileInfo.setFileType(fileType.toLowerCase());
         fileInfo.setBucketName(minioProps.getBucketName());
         // 文件信息存入数据库
         fileInfoService.save(fileInfo);
         // 文件上传到本地
-        minioUtils.upload(minioProps.getBucketName(), file.getOriginalFilename(), file);
+        minioUtils.upload(minioProps.getBucketName(), originalFilename, file);
         return MessageEnumType.SUCCESS.getMessage();
     }
 
     @RequestMapping("/downExcel")
-    public void downExcel(@RequestParam("fileName") String fileName, HttpServletResponse response) throws IOException {
-        String utf8Filename = new String(fileName.getBytes(), StandardCharsets.UTF_8);
-        response.setHeader("Content-Disposition", "attachment;filename=" + new String(utf8Filename.getBytes("utf-8"), "ISO8859-1"));
+    public void downExcel(@RequestParam(value = "fileName",required = false) String fileName,@RequestParam("fileId") long fileId, HttpServletResponse response) throws IOException {
+//        String utf8Filename = new String(fileName.getBytes(), StandardCharsets.UTF_8);
+        FileInfo fileInfo = fileInfoService.getById(fileId);
+        if(fileInfo == null){
+            throw new RuntimeException("文件不存在");
+        }
+        String fileName1 = fileInfo.getFileName();
+        response.setHeader("Content-Disposition", "attachment;filename=" + new String(fileName1.getBytes("utf-8"), "ISO8859-1"));
         response.setContentType("\"application/octet-stream\"");
-        minioUtils.download(minioProps.getBucketName(), utf8Filename, response.getOutputStream());
+        minioUtils.download(minioProps.getBucketName(), fileName1, response.getOutputStream());
     }
 
     @RequestMapping("/getHtmlData")

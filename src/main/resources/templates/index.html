@@ -119,11 +119,16 @@
     // 跳转到文件明细
     function jumpToShowDetail(target) {
         console.log(target.cells[1].innerHTML);
-        window.location.href = "/getHtmlDataById?fileId=" + target.cells[1].innerHTML + "&fileContent=" + $("#fileSearch").val();
+        window.open("/getHtmlDataById?fileId=" + target.cells[1].innerHTML + "&fileContent=" + $("#fileSearch").val(),"_blank");
+        // window.location.href = "/getHtmlDataById?fileId=" + target.cells[1].innerHTML + "&fileContent=" + $("#fileSearch").val();
     }
     // 跳转查看到文件明细
-    function jumpToShowDetailById(fileId) {
-        window.location.href = "/getHtmlDataById?fileId=" + fileId + "&fileContent=" + $("#fileSearch").val();
+    function jumpToShowDetailById(fileId,fileType) {
+        if(fileType == "xlsx" || fileType == "xls"){
+            window.open("/getHtmlDataById?fileId=" + fileId + "&fileContent=" + $("#fileSearch").val(),"_blank");
+        }else{
+            showPopModal("非excel文件不支持查看内容！");
+        }
     }
     // 渲染数据列表头
     function rebuildTableHead() {
@@ -131,7 +136,6 @@
             "<thead>" +
             "<tr>" +
                 "<th>序号</th>" +
-                "<th>文件id</th>" +
                 "<th>文件名</th>" +
                 "<th>上传时间</th>" +
                 "<th>操作</th>" +
@@ -140,9 +144,9 @@
         );
     }
     // 下载文件
-    function downFile(fileName) {
+    function downFile(fileId) {
         showLoading("下载中，请稍等。。。");
-        window.location.href="/downExcel?fileName=" + fileName;
+        window.location.href="/downExcel?fileId=" + fileId;
         hideLoading();
     }
     // 渲染数据列数据
@@ -150,11 +154,10 @@
         $("#dataTable").append(
             "<tbody>" +
             "<tr style='cursor: pointer;'><th>" + eval(index + 1) + "</th>" +
-                "<td>" + item.fileId + "</td>" +
                 "<td>" + item.fileName + "</td>" +
                 "<td>" + item.createTime + "</td>" +
-                "<td><input onclick=\"jumpToShowDetailById("+item.fileId+")\" type=\"button\" value=\"查看\" class=\"btn btn-primary\">" + "&nbsp;"+
-                    "<input onclick=\"downFile('"+item.fileName+"')\" type=\"button\" value=\"下载\" class=\"btn btn-primary\">" +
+                "<td><input onclick=\"jumpToShowDetailById("+item.fileId+",'"+item.fileType+"')\" type=\"button\" value=\"查看\" class=\"btn btn-primary\">" + "&nbsp;"+
+                    "<input onclick=\"downFile("+item.fileId+")\" type=\"button\" value=\"下载\" class=\"btn btn-primary\">" +
                 "</td>" +
             "</tr>" +
             "</tbody>");
@@ -232,7 +235,8 @@
             <input type="button" class="btn btn-primary" th:onclick="|getFile('search',1,'${data.getPages()}')|"
                    value="按文件名搜索"/>
         </label>
-        <input type="file" name="file" id='i-file' accept=".xls, .xlsx"
+        <!-- accept=".xls, .xlsx"-->
+        <input type="file" name="file" id='i-file'
                onchange="$('#location').val($('#i-file').val());" style="display: none">
     </form>
     <!-- 分页数据-->
