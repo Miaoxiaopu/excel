@@ -26,11 +26,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 @Slf4j
 @RestController
@@ -67,7 +65,7 @@ public class ExcelController {
         }
         // 文件类型是不是excel
         FileInfo fileInfo = new FileInfo();
-        String fileType = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String fileType = getFileType(originalFilename);
         if("xlsx".equalsIgnoreCase(fileType) || "xls".equalsIgnoreCase(fileType) ){
             String content = ExcelUtils.excelToHtml(file);
             fileInfo.setContent(content.getBytes("utf-8"));
@@ -142,22 +140,33 @@ public class ExcelController {
         baseElasticUtils.createIndex(idxName, "");
     }
 
+    private String getFileType(String filename){
+        int index = -1;
+        if((index = filename.lastIndexOf(".")) == -1){
+            return  "unknow";
+        }
+        return filename.substring(index + 1);
+    }
     private void handleFileList(List<FileInfo> fileList,String fileContent) {
         if (!CollectionUtils.isEmpty(fileList)) {
-            Consumer<FileInfo> fileInfoConsumer = item -> {
+            for (FileInfo fileInfo : fileList) {
                 try {
-                    String contentStr = new String(item.getContent(), "utf-8");
+                    byte[] fileByteContent = fileInfo.getContent();
+                    if(fileByteContent == null){
+                        continue;
+                    }
+                    String contentStr = new String(fileByteContent, "utf-8");
                     if(StringUtils.isNotBlank(fileContent)){
-                        item.setContentStr(contentStr.replace(fileContent,
+                        fileInfo.setContentStr(contentStr.replace(fileContent,
                                 "<b style=color:red;>"+fileContent+"</b>"));
                     }else{
-                        item.setContentStr(contentStr);
+                        fileInfo.setContentStr(contentStr);
                     }
                 } catch (UnsupportedEncodingException e1) {
                     log.error(MessageEnumType.NOT_SUPPORT_UTF8.getMessage());
                     throw new RuntimeException(MessageEnumType.NOT_SUPPORT_UTF8.getMessage());
                 }
-            }; fileList.forEach(fileInfoConsumer);
+            }
         }
     }
 }
