@@ -15,7 +15,7 @@
     // 初始化遮罩
     function initLoading() {
         $("body").append("<!-- loading -->" +
-            "<div class='modal fade' id='loading' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop='static'>" +
+            "<div class='modal fade' id='loading' tabindex='100' role='dialog' aria-labelledby='myModalLabel' data-backdrop='static'>" +
             "<div style='width:200px;margin:30px auto' role='document'>" +
             "<div class='modal-content'>" +
             "<div id='loadingText' class='modal-body'>" +
@@ -150,13 +150,13 @@
     function rebuildTable(index, item) {
         $("#dataTable").append(
             "<tbody>" +
-            "<tr style='cursor: pointer;'><th>" + eval(index + 1) + "</th>" +
-                "<td>" + item.fileName + "</td>" +
-                "<td>" + item.createTime + "</td>" +
-                "<td><input onclick=\"jumpToShowDetailById("+item.fileId+",'"+item.fileType+"')\" type=\"button\" value=\"查看\" class=\"btn btn-primary\">" + "&nbsp;"+
-                    "<input onclick=\"downFile("+item.fileId+")\" type=\"button\" value=\"下载\" class=\"btn btn-primary\">" +
-                "</td>" +
-            "</tr>" +
+                "<tr style='cursor: pointer;'><th>" + eval(index + 1) + "</th>" +
+                    "<td>" + item.fileName + "</td>" +
+                    "<td>" + item.createTime + "</td>" +
+                    "<td><input onclick=\"jumpToShowDetailById("+item.fileId+",'"+item.fileType+"')\" type=\"button\" value=\"查看\" class=\"btn btn-primary\">" + "&nbsp;"+
+                        "<input onclick=\"downFile("+item.fileId+")\" type=\"button\" value=\"下载\" class=\"btn btn-primary\">" +
+                    "</td>" +
+                "</tr>" +
             "</tbody>");
     }
 
@@ -165,19 +165,19 @@
         $("#pageDiv").empty();
         $("#pageDiv").append(
             "<ul class=\"pagination\">" +
-            " <li>" +
-            "<a href=\"javascript:void(0);\" onClick=\"getFile('first'," + result.current + "," + result.pages + ")\">首页</a>" +
-            "</li>" +
-            "<li>" +
-            "<a href=\"javascript:void(0);\" aria-label=\"Previous\" onclick=\"getFile('last'," + result.current + "," + result.pages + ")\"><span aria-hidden=\"true\">&laquo;</span></a>" +
-            "</li>" +
-            reDrawEveryPage(result) +
-            "<li>" +
-            "<a href=\"javascript:void(0);\" aria-label=\"Next\" onclick=\"getFile('next'," + result.current + "," + result.pages + ")\"><span aria-hidden=\"true\">&raquo;</span></a>" +
-            "</li>" +
-            "<li>" +
-            "<a href=\"javascript:void(0);\" onclick=\"getFile('end'," + result.current + "," + result.pages + ")\">尾页</a>" +
-            "</li>" +
+                " <li>" +
+                    "<a href=\"javascript:void(0);\" onClick=\"getFile('first'," + result.current + "," + result.pages + ")\">首页</a>" +
+                "</li>" +
+                "<li>" +
+                    "<a href=\"javascript:void(0);\" aria-label=\"Previous\" onclick=\"getFile('last'," + result.current + "," + result.pages + ")\"><span aria-hidden=\"true\">&laquo;</span></a>" +
+                "</li>" +
+                reDrawEveryPage(result) +
+                "<li>" +
+                    "<a href=\"javascript:void(0);\" aria-label=\"Next\" onclick=\"getFile('next'," + result.current + "," + result.pages + ")\"><span aria-hidden=\"true\">&raquo;</span></a>" +
+                "</li>" +
+                "<li>" +
+                    "<a href=\"javascript:void(0);\" onclick=\"getFile('end'," + result.current + "," + result.pages + ")\">尾页</a>" +
+                "</li>" +
             "</ul>"
         );
     }
@@ -210,8 +210,6 @@
     }
 </script>
 <br/>
-<!--<h1>excel上传下载</h1>-->
-<!--<br/><br/>-->
 <div class="with:80%">
     <form class="form-inline" action="/uploadExcel" method="post" enctype="multipart/form-data" onsubmit="return checkBeforeSubmit()">
         <label class="input-group-btn">
@@ -237,9 +235,9 @@
                onchange="$('#location').val($('#i-file').val());" style="display: none">
     </form>
     <!-- 分页数据-->
-    <table class="table table-hover" id="dataTable">
-    </table>
+    <table class="table table-hover" id="dataTable"></table>
 </div>
+
 <!--上一页、下一页、首页、尾页-->
 <div class="modal-footer no-margin-top" id="pageDiv"></div>
 
