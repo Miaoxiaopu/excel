@@ -1,4 +1,4 @@
-package com.fileinfo.config;
+package com.fileinfo.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Aspect
 @Component
-public class AOPConfig {
+public class AopForController {
     @Pointcut(value = "execution(* com.fileinfo.controller.*.*(..))")
     public void costTimePoint(){
     }
