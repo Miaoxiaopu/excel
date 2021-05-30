@@ -24,33 +24,49 @@ public final class MinioUtils {
      * @param fileName   文件名
      * @throws Exception
      */
-    public void download(String bucketName, String fileName, OutputStream out){
+    public void download(String bucketName, String fileName, OutputStream out) {
         InputStream in = null;
         try {
             byte[] bytes = new byte[1024];
             int length = -1;
             in = minioClient.getObject(bucketName, fileName);
-            while((length = in.read(bytes)) != -1){
-                out.write(bytes,0,length);
+            while ((length = in.read(bytes)) != -1) {
+                out.write(bytes, 0, length);
             }
             out.flush();
         } catch (Exception e) {
             log.error("从minio下载失败" + e.getMessage());
-        }finally {
-            if(out!=null){
+        } finally {
+            if (out != null) {
                 try {
                     out.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if(in!=null){
+            if (in != null) {
                 try {
                     in.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    /**
+     * 获取文件输入流
+     *
+     * @param bucketName
+     * @param fileName
+     * @return InputStream
+     */
+    public InputStream getFileInputStream(String bucketName, String fileName) {
+        try {
+            return minioClient.getObject(bucketName, fileName);
+        } catch (Exception e) {
+            log.error("从minio获取文件流失败 " + e.getMessage());
+            throw new RuntimeException("获取文件流失败 " + e.getMessage());
         }
     }
 
@@ -62,13 +78,9 @@ public final class MinioUtils {
      * @param file
      * @throws Exception
      */
-    public void upload(String bucketName, String ObjectName, MultipartFile file) {
-        try {
-            createBucket(bucketName);
-            minioClient.putObject(bucketName, ObjectName, file.getInputStream(), file.getContentType());
-        } catch (Exception e) {
-            log.error("minio上传失败" + e.getMessage());
-        }
+    public void upload(String bucketName, String ObjectName, MultipartFile file) throws Exception {
+        createBucket(bucketName);
+        minioClient.putObject(bucketName, ObjectName, file.getInputStream(), file.getContentType());
     }
 
     /**
@@ -77,28 +89,20 @@ public final class MinioUtils {
      * @param bucketName 桶名
      * @throws Exception
      */
-    public void createBucket(String bucketName) {
-        try {
-            if (!minioClient.bucketExists(bucketName)) {
-                minioClient.makeBucket(bucketName);
-            }
-        } catch (Exception e) {
-            log.error("minio创建桶失败" + e.getMessage());
+    public void createBucket(String bucketName) throws Exception {
+        if (!minioClient.bucketExists(bucketName)) {
+            minioClient.makeBucket(bucketName);
         }
     }
 
     /**
      * 获取文件存储地址
+     *
      * @param bucketName 桶名
-     * @param fileName 文件名
+     * @param fileName   文件名
      * @return 文件存储地址
      */
-    public String getObjectUrl(String bucketName,String fileName){
-        try {
-            return minioClient.getObjectUrl(bucketName,fileName);
-        } catch (Exception e) {
-            log.error("获取文件地址失败" + e.getMessage());
-        }
-        return "";
+    public String getObjectUrl(String bucketName, String fileName) throws Exception {
+        return minioClient.getObjectUrl(bucketName, fileName);
     }
 }

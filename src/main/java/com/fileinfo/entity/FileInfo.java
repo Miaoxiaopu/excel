@@ -19,4 +19,6 @@ public class FileInfo extends BaseEntity{
     private String bucketName;
     @TableField(exist = false)
     private String contentStr;
+    @TableField(value = "file_size")
+    private int fileSize;
 }

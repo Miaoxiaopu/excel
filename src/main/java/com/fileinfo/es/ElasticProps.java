@@ -1,4 +1,4 @@
-package com.fileinfo.config;
+package com.fileinfo.es;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

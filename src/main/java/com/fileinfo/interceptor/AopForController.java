@@ -19,10 +19,10 @@ public class AopForController {
     public Object around(ProceedingJoinPoint pjp) throws Throwable {
         Signature signature = pjp.getSignature();
         long start = System.currentTimeMillis();
-        log.info("------>" + "["+Thread.currentThread().getName()+"]" + signature.getName() + "开始执行<------");
+        log.info("------> [ {} ] 开始执行<------", signature.getName());
         Object result = pjp.proceed();
         long end = System.currentTimeMillis();
-        log.info("------>" + "["+Thread.currentThread().getName()+"]" + signature.getName() + "执行结束,共耗时"+ (end-start)/1000+"s<------");
+        log.info("------> [ {} ] 执行结束,共耗时{}ms<------", signature.getName(), end - start);
         return result;
     }
 }

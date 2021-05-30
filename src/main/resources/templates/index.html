@@ -101,7 +101,6 @@
                         "<br>" +
                         "<h3>暂无数据</h3>."
                     );
-                    $("#dataTable").modal
                 } else {
                     $("#dataTable").empty();// 每次请求前将table内容清空
                     rebuildTableHead();// 重组表头
@@ -257,9 +256,8 @@
 <div class="modal-footer no-margin-top" id="pageDiv"></div>
 
 <!--控制模态框显示的按钮-->
-<button class="btn btn-primary btn-lg" id="modalControl" data-toggle="modal" data-target="#myModal"
-        style="display: none;">
-    开始演示模态框
+<button class="btn btn-primary btn-lg" id="modalControl" data-toggle="modal" data-target="#myModal" style="display: none">
+    模态框控制按钮
 </button>
 <!-- 模态框（Modal） -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -284,10 +282,5 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<div>
-    <video src="D:\转码工具\1.mp4">
-        sdfdsfsdfsd
-    </video>
-</div>
 </body>
 </html>

@@ -10,17 +10,14 @@
     <script type="text/javascript" th:src="@{/js/bootstrap-paginator.js}"></script>
     <script type="text/javascript" th:src="@{/js/fileinput.min.js}"></script>
 </head>
-<body onload="initLoading()" style="background-color: #EFF1F4"  class="container">
+<body onload="initLoading()" style="background-color: #EFF1F4" class="container">
 <script type="text/javascript">
     // 初始化遮罩
     function initLoading() {
         $("body").append("<!-- loading -->" +
-            "<div class='modal fade' id='loading' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' data-backdrop='static'>" +
-            "<div class='modal-dialog' role='document'>" +
+            "<div class='modal fade' id='loading' tabindex='100' role='dialog' aria-labelledby='myModalLabel' data-backdrop='static'>" +
+            "<div style='width:200px;margin:30px auto' role='document'>" +
             "<div class='modal-content'>" +
-            "<div class='modal-header'>" +
-            "<h4 class='modal-title' id='myModalLabel'>提示</h4>" +
-            "</div>" +
             "<div id='loadingText' class='modal-body'>" +
             "<span class='glyphicon glyphicon-refresh' aria-hidden='true'>1</span>" +
             "处理中，请稍候。。。" +
@@ -30,19 +27,23 @@
             "</div>"
         );
     }
+
     // 显示遮罩
     function showLoading(text) {
         $("#loadingText").html(text);
         $("#loading").modal("show");
     }
+
     // 隐藏遮罩
     function hideLoading() {
         $("#loading").modal("hide");
     }
+
     // 页面初始化查询数据
     $(function () {
         getFile("", 1, 0);
     })
+
     // 计算当前页
     function getCurrPage(operatetype, current, total) {
         if (operatetype == 'last' || operatetype == 'search') {// 点击上一页
@@ -65,6 +66,7 @@
             return current;
         }
     }
+
     // 数据列数据查询
     function getFile(operatetype, current, total) {
         if (operatetype == 'end' || operatetype == 'next') {
@@ -99,7 +101,6 @@
                         "<br>" +
                         "<h3>暂无数据</h3>."
                     );
-                    $("#dataTable").modal
                 } else {
                     $("#dataTable").empty();// 每次请求前将table内容清空
                     rebuildTableHead();// 重组表头
@@ -116,49 +117,54 @@
             }
         });
     }
+
     // 跳转到文件明细
     function jumpToShowDetail(target) {
         console.log(target.cells[1].innerHTML);
-        window.open("/getHtmlDataById?fileId=" + target.cells[1].innerHTML + "&fileContent=" + $("#fileSearch").val(),"_blank");
+        window.open("/getHtmlDataById?fileId=" + target.cells[1].innerHTML + "&fileContent=" + $("#fileSearch").val(), "_blank");
         // window.location.href = "/getHtmlDataById?fileId=" + target.cells[1].innerHTML + "&fileContent=" + $("#fileSearch").val();
     }
+
     // 跳转查看到文件明细
-    function jumpToShowDetailById(fileId,fileType) {
-        if(fileType == "xlsx" || fileType == "xls"){
-            window.open("/getHtmlDataById?fileId=" + fileId + "&fileContent=" + $("#fileSearch").val(),"_blank");
-        }else{
+    function jumpToShowDetailById(fileId, fileType) {
+        if (fileType == "xlsx" || fileType == "xls") {
+            window.open("/getHtmlDataById?fileId=" + fileId + "&fileContent=" + $("#fileSearch").val(), "_blank");
+        } else {
             showPopModal("非excel文件不支持查看内容！");
         }
     }
+
     // 渲染数据列表头
     function rebuildTableHead() {
         $("#dataTable").append(
             "<thead>" +
             "<tr>" +
-                "<th>序号</th>" +
-                "<th>文件名</th>" +
-                "<th>上传时间</th>" +
-                "<th>操作</th>" +
+            "<th>序号</th>" +
+            "<th>文件名</th>" +
+            "<th>上传时间</th>" +
+            "<th>操作</th>" +
             "</tr>" +
             "</thead>"
         );
     }
+
     // 下载文件
     function downFile(fileId) {
         showLoading("下载中，请稍等。。。");
-        window.location.href="/downExcel?fileId=" + fileId;
+        window.location.href = "/downExcel?fileId=" + fileId;
         hideLoading();
     }
+
     // 渲染数据列数据
     function rebuildTable(index, item) {
         $("#dataTable").append(
             "<tbody>" +
             "<tr style='cursor: pointer;'><th>" + eval(index + 1) + "</th>" +
-                "<td>" + item.fileName + "</td>" +
-                "<td>" + item.createTime + "</td>" +
-                "<td><input onclick=\"jumpToShowDetailById("+item.fileId+",'"+item.fileType+"')\" type=\"button\" value=\"查看\" class=\"btn btn-primary\">" + "&nbsp;"+
-                    "<input onclick=\"downFile("+item.fileId+")\" type=\"button\" value=\"下载\" class=\"btn btn-primary\">" +
-                "</td>" +
+            "<td>" + item.fileName + "</td>" +
+            "<td>" + item.createTime + "</td>" +
+            "<td><input onclick=\"jumpToShowDetailById(" + item.fileId + ",'" + item.fileType + "')\" type=\"button\" value=\"查看\" class=\"btn btn-primary\">" + "&nbsp;" +
+            "<input onclick=\"downFile(" + item.fileId + ")\" type=\"button\" value=\"下载\" class=\"btn btn-primary\">" +
+            "</td>" +
             "</tr>" +
             "</tbody>");
     }
@@ -184,6 +190,7 @@
             "</ul>"
         );
     }
+
     // 渲染分页1、2、3、4、5
     function reDrawEveryPage(result) {
         var res = "";
@@ -196,27 +203,27 @@
         }
         return res;
     }
+
     // 上传文件前是否选择了文件
-    function checkBeforeSubmit(){
-        if($("#i-file").val() == "" || $("#i-file").val() == null){
+    function checkBeforeSubmit() {
+        if ($("#i-file").val() == "" || $("#i-file").val() == null) {
             showPopModal("请选择文件！");
             return false;
-        }else{
+        } else {
             return true;
         }
     }
 
     // 显示弹窗
     function showPopModal(message) {
-        document.getElementById("modalContent").innerHTML=message;
+        document.getElementById("modalContent").innerHTML = message;
         $("#modalControl").click();
     }
 </script>
 <br/>
-<!--<h1>excel上传下载</h1>-->
-<!--<br/><br/>-->
 <div class="with:80%">
-    <form class="form-inline" action="/uploadExcel" method="post" enctype="multipart/form-data" onsubmit="return checkBeforeSubmit()">
+    <form class="form-inline" action="/uploadExcel" method="post" enctype="multipart/form-data"
+          onsubmit="return checkBeforeSubmit()">
         <label class="input-group-btn">
             <!--用于显示id为i-file的文件名-->
             <input id="location" class="form-control" type="text">
@@ -227,12 +234,14 @@
         <label class="input-group-btn">
             <input type="text" class="form-control" id="fileSearch">
             <!--TODO页面初始化时候data.getPages()拿不到值-->
-            <input type="button" class="btn btn-primary" th:onclick="|getFile('search',1,'${data.getPages()}')|"
+            <input type="button" class="btn btn-primary"
+                   th:onclick="|getFile('search',1,'${data==null ? 1 : data.getPages()}')|"
                    value="按文件内容搜索"/>
         </label>
         <label class="input-group-btn">
             <input type="text" class="form-control" id="fileNameSearch">
-            <input type="button" class="btn btn-primary" th:onclick="|getFile('search',1,'${data.getPages()}')|"
+            <input type="button" class="btn btn-primary"
+                   th:onclick="|getFile('search',1,'${data==null ? 1 : data.getPages()}')|"
                    value="按文件名搜索"/>
         </label>
         <!-- accept=".xls, .xlsx"-->
@@ -240,15 +249,15 @@
                onchange="$('#location').val($('#i-file').val());" style="display: none">
     </form>
     <!-- 分页数据-->
-    <table class="table table-hover" id="dataTable">
-    </table>
+    <table class="table table-hover" id="dataTable"></table>
 </div>
+
 <!--上一页、下一页、首页、尾页-->
 <div class="modal-footer no-margin-top" id="pageDiv"></div>
 
 <!--控制模态框显示的按钮-->
-<button class="btn btn-primary btn-lg" id="modalControl" data-toggle="modal" data-target="#myModal" style="display: none;">
-    开始演示模态框
+<button class="btn btn-primary btn-lg" id="modalControl" data-toggle="modal" data-target="#myModal" style="display: none">
+    模态框控制按钮
 </button>
 <!-- 模态框（Modal） -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
